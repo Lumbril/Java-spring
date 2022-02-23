@@ -9,4 +9,9 @@ public class TestController {
     public String hello(){
         return "hello";
     }
+
+    @GetMapping("/lorem")
+    public String lorem() {
+        return "test";
+    }
 }
