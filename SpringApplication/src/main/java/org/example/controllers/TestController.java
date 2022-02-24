@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.entity.User;
 import org.example.repository.UserRepository;
+import org.example.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -9,11 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class TestController {
-    @Autowired
-    private UserRepository userRepository;
-
     @GetMapping("/hello")
     public String hello(){
         return "hello";
@@ -38,6 +38,9 @@ public class TestController {
                 "</body>\n" +
                 "</html>";
     }
+
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping("/db")
     @ResponseBody
@@ -64,5 +67,20 @@ public class TestController {
         } catch (Exception e) {
             return "Error: " + e;
         }
+    }
+
+    @Autowired
+    private UserServiceImpl userService;
+
+    @RequestMapping("/db_upd")
+    @ResponseBody
+    public String getUpdDB() {
+        List<User> users = userService.getAll();
+
+        StringBuilder sb = new StringBuilder();
+
+        users.forEach(user -> sb.append(user.getId() + ": " + user.getLogin() + "<br>"));
+
+        return sb.toString();
     }
 }
